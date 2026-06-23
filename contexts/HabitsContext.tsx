@@ -81,7 +81,30 @@ export function HabitsProvider({ children }: { children: React.ReactNode }) {
           AsyncStorage.getItem(STORAGE_KEY),
           AsyncStorage.getItem(PREMIUM_KEY),
         ]);
-        if (habitsRaw) setHabits(JSON.parse(habitsRaw));
+        if (habitsRaw) {
+          setHabits(JSON.parse(habitsRaw));
+        } else {
+          const defaultHabits: Habit[] = [
+            {
+              id: 'default_sport',
+              name: 'Sport',
+              color: '#4C2B8A',
+              emoji: '💪',
+              createdAt: getTodayString(),
+              completions: [],
+            },
+            {
+              id: 'default_kitob',
+              name: 'Kitob o\'qish',
+              color: '#1B5E38',
+              emoji: '📚',
+              createdAt: getTodayString(),
+              completions: [],
+            },
+          ];
+          setHabits(defaultHabits);
+          await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(defaultHabits));
+        }
         if (premiumRaw === 'true') setIsPremium(true);
       } catch {}
       setIsLoaded(true);
